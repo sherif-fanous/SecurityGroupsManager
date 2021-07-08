@@ -1,0 +1,9 @@
+language: go
+go:
+  - "1.16.x"
+script:
+  - go test -v ./security-groups-manager/cmd
+notifications:
+  email:
+    on_failure: always
+    on_success: never

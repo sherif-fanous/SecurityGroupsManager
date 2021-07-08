@@ -1,0 +1,15 @@
+{
+  "SecurityGroups": [{{ range $index, $securityGroup := .}}{{if $index}},{{end}}
+    {
+      "Description": "{{.Description}}",
+      "GroupName": "{{.GroupName}}",
+      "IpPermissions": [
+      ],
+      "OwnerId": "{{.OwnerId}}",
+      "GroupId": "{{.GroupId}}",
+      "IpPermissionsEgress": [
+      ],
+      "VpcId": "{{.VpcId}}"
+    }{{end}}
+  ]
+}

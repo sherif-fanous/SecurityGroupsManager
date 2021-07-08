@@ -1,0 +1,13 @@
+{
+  "SecurityGroups": [
+    {
+      "Description": "Nonexistent security group",
+      "GroupName": "SecurityGroupsManager_DoesNotExits_SG",
+      "IpPermissions": [],
+      "OwnerId": "243828964935",
+      "GroupId": "sg-KH79J3vpsuWb7rbr",
+      "IpPermissionsEgress": [],
+      "VpcId": "vpc-iaEHJWRoKEvXtDp8"
+    }
+  ]
+}

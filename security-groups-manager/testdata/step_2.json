@@ -1,0 +1,191 @@
+{
+  "SecurityGroups": [{{ range $index, $securityGroup := .}}{{if $index}},{{end}}
+    {
+      "Description": "{{.Description}}",
+      "GroupName": "{{.GroupName}}",
+      "IpPermissions": [
+        {
+          "FromPort": 80,
+          "Hosts": [
+            {
+              "FQDN": "googlebot.com",
+              "Description": "Googlebot"
+            },
+            {
+              "FQDN": "search.msn.com",
+              "Description": "Bingbot"
+            }
+          ],
+          "IpProtocol": "tcp",
+          "IpRanges": [
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "ToPort": 80,
+          "UserIdGroupPairs": [
+            {
+              "GroupId": "{{.GroupId}}",
+              "UserId": "{{.OwnerId}}",
+              "Description": "Allow inbound HTTP from same security group"
+            }
+          ]
+        },
+        {
+          "FromPort": 22,
+          "Hosts": [
+            {
+              "FQDN": "example.com",
+              "Description": "Example"
+            }
+          ],
+          "IpProtocol": "tcp",
+          "IpRanges": [
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "ToPort": 22,
+          "UserIdGroupPairs": []
+        },
+        {
+          "FromPort": -1,
+          "IpProtocol": "icmpv6",
+          "IpRanges": [
+            {
+              "CidrIp": "0.0.0.0/0",
+              "Description": "Allow inbound ICMPv6 from anywhere"
+            }
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "ToPort": -1,
+          "UserIdGroupPairs": []
+        },
+        {
+          "IpProtocol": "55",
+          "Hosts": [
+          ],
+          "IpRanges": [
+            {
+              "CidrIp": "0.0.0.0/0",
+              "Description": "Allow inbound MOBILE from anywhere"
+            }
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "UserIdGroupPairs": []
+        },
+        {
+          "FromPort": 20,
+          "Hosts": [
+          ],
+          "IpProtocol": "tcp",
+          "IpRanges": [
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "ToPort": 21,
+          "UserIdGroupPairs": [
+            {
+              "GroupId": "{{.GroupId}}",
+              "UserId": "{{.OwnerId}}",
+              "Description": "Allow inbound FTP from same security group"
+            }
+          ]
+        },
+        {
+          "FromPort": 53,
+          "Hosts": [
+          ],
+          "IpProtocol": "udp",
+          "IpRanges": [
+            {
+              "CidrIp": "0.0.0.0/0",
+              "Description": "Allow inbound DNS from anywhere"
+            }
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "ToPort": 53,
+          "UserIdGroupPairs": []
+        },
+        {
+          "FromPort": 443,
+          "Hosts": [
+            {
+              "FQDN": "googlebot.com",
+              "Description": "Googlebot"
+            },
+            {
+              "FQDN": "search.msn.com",
+              "Description": "Bingbot"
+            }
+          ],
+          "IpProtocol": "tcp",
+          "IpRanges": [
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "ToPort": 443,
+          "UserIdGroupPairs": [
+            {
+              "GroupId": "{{.GroupId}}",
+              "UserId": "{{.OwnerId}}",
+              "Description": "Allow inbound HTTP from same security group"
+            }
+          ]
+        },
+        {
+          "FromPort": -1,
+          "Hosts": [
+          ],
+          "IpProtocol": "icmp",
+          "IpRanges": [
+            {
+              "CidrIp": "0.0.0.0/0",
+              "Description": "Allow inbound ICMP from anywhere"
+            }
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "ToPort": -1,
+          "UserIdGroupPairs": []
+        }
+      ],
+      "OwnerId": "{{.OwnerId}}",
+      "GroupId": "{{.GroupId}}",
+      "IpPermissionsEgress": [
+        {
+          "IpProtocol": "-1",
+          "IpRanges": [
+            {
+              "CidrIp": "0.0.0.0/0",
+              "Description": "Allow outbound traffic to anywhere"
+            }
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "UserIdGroupPairs": []
+        }
+      ],
+      "Tags": [
+        {
+          "Key": "Inbound rules count",
+          "Value": "8"
+        },
+        {
+          "Key": "Outbound rules count",
+          "Value": "1"
+        },
+        {
+          "Key": "Name",
+          "Value": "{{.GroupName}}"
+        },
+        {
+          "Key": "Region",
+          "Value": "{{.GroupName | extractRegion}}"
+        }
+      ],
+      "VpcId": "{{.VpcId}}"
+    }{{end}}
+  ]
+}

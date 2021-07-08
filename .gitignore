@@ -1,0 +1,7 @@
+.aws
+.aws-sam
+.vscode
+SecurityGroupsManager Architecture.drawio
+SecurityGroupsManager.code-workspace
+cloudFormation
+samconfig.toml

@@ -1,0 +1,197 @@
+{
+  "SecurityGroups": [{{ range $index, $securityGroup := .}}{{if $index}},{{end}}
+    {
+      "Description": "{{.Description}}",
+      "GroupName": "{{.GroupName}}",
+      "IpPermissions": [
+        {
+          "FromPort": 80,
+          "Hosts": [
+          ],
+          "IpProtocol": "tcp",
+          "IpRanges": [
+            {
+              "CidrIp": "0.0.0.0/0",
+              "Description": "HTTP open to the world"
+            }
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "ToPort": 80,
+          "UserIdGroupPairs": []
+        },
+        {
+          "FromPort": 22,
+          "Hosts": [
+          ],
+          "IpProtocol": "tcp",
+          "IpRanges": [
+            {
+              "CidrIp": "0.0.0.0/0",
+              "Description": "SSH open to the world"
+            }
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "ToPort": 22,
+          "UserIdGroupPairs": []
+        },
+        {
+          "FromPort": -1,
+          "Hosts": [
+          ],
+          "IpProtocol": "icmpv6",
+          "IpRanges": [
+            {
+              "CidrIp": "0.0.0.0/0",
+              "Description": "ICMPv6 open to the world"
+            }
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "ToPort": -1,
+          "UserIdGroupPairs": []
+        },
+        {
+          "IpProtocol": "55",
+          "Hosts": [
+          ],
+          "IpRanges": [
+            {
+              "CidrIp": "0.0.0.0/0",
+              "Description": "MOBILE open to the world"
+            }
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "UserIdGroupPairs": []
+        },
+        {
+          "FromPort": 53,
+          "Hosts": [
+          ],
+          "IpProtocol": "udp",
+          "IpRanges": [
+            {
+              "CidrIp": "0.0.0.0/0",
+              "Description": "DNS open to the world"
+            }
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "ToPort": 53,
+          "UserIdGroupPairs": []
+        },
+        {
+          "FromPort": 443,
+          "Hosts": [
+          ],
+          "IpProtocol": "tcp",
+          "IpRanges": [
+            {
+              "CidrIp": "0.0.0.0/0",
+              "Description": "HTTPS open to the world"
+            }
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "ToPort": 443,
+          "UserIdGroupPairs": []
+        },
+        {
+          "FromPort": -1,
+          "Hosts": [
+          ],
+          "IpProtocol": "icmp",
+          "IpRanges": [
+            {
+              "CidrIp": "0.0.0.0/0",
+              "Description": "ICMP open to the world"
+            }
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "ToPort": -1,
+          "UserIdGroupPairs": []
+        }
+      ],
+      "OwnerId": "{{.OwnerId}}",
+      "GroupId": "{{.GroupId}}",
+      "IpPermissionsEgress": [
+        {
+          "FromPort": 80,
+          "Hosts": [
+          ],
+          "IpProtocol": "tcp",
+          "IpRanges": [
+            {
+              "CidrIp": "0.0.0.0/0",
+              "Description": "HTTP open to the world"
+            }
+          ],
+          "Ipv6Ranges": [
+            {
+              "CidrIpv6": "::/0",
+              "Description": "HTTP open to the world"
+            }
+          ],
+          "PrefixListIds": [],
+          "ToPort": 80,
+          "UserIdGroupPairs": []
+        },
+        {
+          "FromPort": 53,
+          "Hosts": [
+            {
+              "FQDN": "dns.google",
+              "Description": "Google Public DNS"
+            }
+          ],
+          "IpProtocol": "udp",
+          "IpRanges": [
+          ],
+          "Ipv6Ranges": [
+          ],
+          "PrefixListIds": [],
+          "ToPort": 53,
+          "UserIdGroupPairs": []
+        },
+        {
+          "FromPort": 443,
+          "Hosts": [
+          ],
+          "IpProtocol": "tcp",
+          "IpRanges": [
+            {
+              "CidrIp": "0.0.0.0/0",
+              "Description": "HTTPS open to the world"
+            }
+          ],
+          "Ipv6Ranges": [],
+          "PrefixListIds": [],
+          "ToPort": 443,
+          "UserIdGroupPairs": []
+        }
+      ],
+      "Tags": [
+        {
+          "Key": "Inbound rules count",
+          "Value": "7"
+        },
+        {
+          "Key": "Outbound rules count",
+          "Value": "3"
+        },
+        {
+          "Key": "Name",
+          "Value": "{{.GroupName}}"
+        },
+        {
+          "Key": "Region",
+          "Value": "{{.GroupName | extractRegion}}"
+        }
+      ],
+      "VpcId": "{{.VpcId}}"
+    }{{end}}
+  ]
+}

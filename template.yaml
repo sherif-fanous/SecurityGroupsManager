@@ -1,0 +1,107 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
+Description: SecurityGroupsManager Serverless Application
+
+Conditions:
+  RateExpressionMinutesSingular: !Equals [!Ref RateExpressionMinutes, 1]
+
+Parameters:
+  Configuration:
+    Description: Enter the configuration (In JSON format)
+    Type: String
+
+  EnableDebugMode:
+    AllowedValues:
+      - "true"
+      - "false"
+    Default: "false"
+    Description: To enable DEBUG mode set this parameter to true
+    Type: String
+
+  RateExpressionMinutes:
+    Default: 1
+    Description: >-
+      Enter minutes for rate expression (SecurityGroupsManagerLambdaFunction will
+      be triggered every X minutes)
+    MinValue: 1
+    Type: Number
+
+Resources:
+  SecurityGroupsManagerLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: security-groups-manager/cmd/
+      Environment:
+        Variables:
+          CONFIGURATION: !Ref Configuration
+          DEBUG: !Ref EnableDebugMode
+      Events:
+        ScheduledEvent:
+          Type: Schedule
+          Properties:
+            Name: SecurityGroupsManagerLambdaFunctionScheduledEvent
+            Schedule:
+              !If [
+                RateExpressionMinutesSingular,
+                rate(1 minute),
+                !Join ["", [rate(, !Ref RateExpressionMinutes, " minutes)"]],
+              ]
+      FunctionName: SecurityGroupsManager
+      Handler: main
+      Role: !GetAtt SecurityGroupsManagerLambdaFunctionRole.Arn
+      Runtime: go1.x
+      Timeout: 30
+
+  SecurityGroupsManagerLambdaFunctionCloudWatchLogsPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: SecurityGroupsManagerLambdaFunctionCloudWatchLogsPolicy
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: "*"
+        Version: 2012-10-17
+
+  SecurityGroupsManagerLambdaFunctionEC2Policy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: SecurityGroupsManagerLambdaFunctionEC2Policy
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action:
+              - ec2:AuthorizeSecurityGroupEgress
+              - ec2:AuthorizeSecurityGroupIngress
+              - ec2:CreateTags
+              - ec2:DeleteTags
+              - ec2:DescribeRegions
+              - ec2:DescribeSecurityGroups
+              - ec2:RevokeSecurityGroupEgress
+              - ec2:RevokeSecurityGroupIngress
+              - ec2:UpdateSecurityGroupRuleDescriptionsEgress
+              - ec2:UpdateSecurityGroupRuleDescriptionsIngress
+            Resource: "*"
+        Version: 2012-10-17
+
+  SecurityGroupsManagerLambdaFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - !Ref SecurityGroupsManagerLambdaFunctionCloudWatchLogsPolicy
+        - !Ref SecurityGroupsManagerLambdaFunctionEC2Policy
+      Path: /
+      RoleName: SecurityGroupsManagerLambdaFunctionRole
