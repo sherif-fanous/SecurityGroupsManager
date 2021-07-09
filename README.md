@@ -139,7 +139,7 @@ You'll need to make sure you're in the AWS region in which you want CloudFormati
 - **RateExpressionMinutes**
   - This parameter configure the rate expression of the EventBridge rule. The Lambda Function is invoked by an EventBridge rule and this parameter controls the frequency of invocations
 
-# Sample Output
+## Sample Output
 
 SecurityGroupsManager sends its output to CloudWatch Logs. The output is displayed in tabular form.
 
