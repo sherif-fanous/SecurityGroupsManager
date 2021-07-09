@@ -9,11 +9,11 @@ SecurityGroupsManager is an AWS serverless application. The core of the applicat
 
 ## Problem Statment
 
-The premise from SecurityGroupsManager is simple.
+The premise for SecurityGroupsManager is simple.
 
 You provide a desired state of one or more security groups and SecurityGroupsManager monitors the security groups in question and ensures they are always kept in sync with the desired state.
 
-Additionally, SecurityGroupsManager addresses AWS' security groups limitation where the source or destination of a security group rule requires any of the following
+Additionally, SecurityGroupsManager addresses AWS' security groups limitation where the source or destination of a security group rule requires any of the following:
 
 1. An individual IPv4 or IPv6 address, in CIDR block notation
 2. A range of IPv4 or IPv6 addresses, in CIDR block notation
@@ -28,7 +28,7 @@ A dynamic DNS service takes your dynamic IP address and makes it act as though i
 
 ## Solution
 
-You've determined the desired state of your security groups and setup a dynamic DNS hostname. You've made sure the dynamic DNS hostname si always updated to point to your currently assigned dynamic IP address. Now all you need is a solution that monitors your security groups and ensures they are always kept in sync with the desired state.
+You've determined the desired state of your security groups and setup a dynamic DNS hostname. You've made sure the dynamic DNS hostname is always updated to point to your currently assigned dynamic IP address. Now all you need is a solution that monitors your security groups and ensures they are always kept in sync with the desired state.
 
 That's where SecurityGroupsManager comes in. You provide the Lambda Function with a configuration that describes the desired state of one or more security group. On each invocation the Lamda Function compares the as is state against the desired state of each configured security group and executes any required remediations.
 
@@ -37,11 +37,11 @@ That's where SecurityGroupsManager comes in. You provide the Lambda Function wit
 
 ## Deployment
 
-The easiest way to deploy SecurityGroupsManager is to use the CloudFormation Quick Create Stack Launch URL
+The easiest way to deploy SecurityGroupsManager is to use the CloudFormation Quick Create Stack Launch URL.
 
 [![](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/quickcreate?templateURL=https://manage-security-groups-cloudformation-artifacts.s3.ca-central-1.amazonaws.com/template.yaml&stackName=SecurityGroupsManagerStack)
 
-This will open the CloudFormation Quick Create Stack Console
+This will open the CloudFormation Quick Create Stack Console.
 
 ![Imgur](https://i.imgur.com/J7udell.png)
 
@@ -141,9 +141,9 @@ You'll need to make sure you're in the AWS region in which you want CloudFormati
 
 # Sample Output
 
-SecurityGroupsManager sends its output to CloudWatch Logs. The output is displayed in tabular form
+SecurityGroupsManager sends its output to CloudWatch Logs. The output is displayed in tabular form.
 
-<span style="color:red">**The tabular form in CloudWatch Logs will look completely messed up. This is due to text wrapping**</span>
+<span style="color:red">**The tabular form in CloudWatch Logs will look completely messed up. This is due to text wrapping.**</span>
 
 To be able to view the tabular form as intended
 1. Check the `View as text` checkbox
@@ -151,7 +151,7 @@ To be able to view the tabular form as intended
 3. Copy the selected output
 4. Paste the copied output into your favorite text editor and disable text wrapping
 
-Here are some sample outputs
+Here are some sample outputs:
 
 - Remediations determined and applied
 
