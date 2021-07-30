@@ -37,6 +37,8 @@ That's where SecurityGroupsManager comes in. You provide the Lambda Function wit
 
 ## Deployment
 
+### <ins>CloudFormation</ins>
+
 The easiest way to deploy SecurityGroupsManager is to use the CloudFormation Quick Create Stack Launch URL.
 
 [![](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/quickcreate?templateURL=https://manage-security-groups-cloudformation-artifacts.s3.ca-central-1.amazonaws.com/template.yaml&stackName=SecurityGroupsManagerStack)
@@ -47,7 +49,7 @@ This will open the CloudFormation Quick Create Stack Console.
 
 You'll need to make sure you're in the AWS region in which you want CloudFormation to create your resources. To switch regions, choose the region list to the right of your account information on the navigation bar.
 
-## CloudFormation Stack Setup
+Configure the CloudFormation stack as follows:
 
 - **Stack name**
   - This is the name of the CloudFormation Stack that will be created
@@ -138,6 +140,214 @@ You'll need to make sure you're in the AWS region in which you want CloudFormati
   
 - **RateExpressionMinutes**
   - This parameter configure the rate expression of the EventBridge rule. The Lambda Function is invoked by an EventBridge rule and this parameter controls the frequency of invocations
+
+### <ins>Serverless Application Repository</ins>
+SecurityGroupsManager is published as a public application on AWS Serverless Application Repository (SAR)
+
+Please check the AWS CloudFormations instructions above as deploying using AWS SAR is almost identical to deploying using AWS CloudFormation.
+
+![Imgur](https://i.imgur.com/3hcTzZt.png)
+
+### <ins>Pulumi</ins>
+You can use Pulumi to deploy SecurityGroupsManager using the following instructions
+- Create a new Pulumi project and stack using the command
+  
+  `$ pulumi new https://github.com/sfanous/SecurityGroupsManager/tree/master/pulumi`
+
+- Create a file using your favorite text editor containing your desired configuration such as the following
+
+   ```json
+    {
+      "SecurityGroups": [
+        {
+          "Description": "Test SG",
+          "GroupId": "sg-6d9a02303c07f74e2",
+          "GroupName": "Test SG",
+          "IpPermissions": [
+            {
+              "FromPort": 22,
+              "Hosts": [
+                {
+                  "Description": "My home IP address",
+                  "FQDN": "myHome.hopto.org"
+                }
+              ],
+              "IpProtocol": "tcp",
+              "Ipv6Ranges": [],
+              "PrefixListIds": [],
+              "ToPort": 22,
+              "UserIdGroupPairs": []
+            },
+            {
+              "FromPort": 80,
+              "Hosts": [
+                {
+                  "Description": "My home IP address",
+                  "FQDN": "myHome.hopto.org"
+                }
+              ],
+              "IpProtocol": "tcp",
+              "IpRanges": [
+                {
+                  "CidrIp": "1.2.3.4/32"
+                }
+              ],
+              "Ipv6Ranges": [],
+              "PrefixListIds": [],
+              "ToPort": 80,
+              "UserIdGroupPairs": []
+            }
+          ],
+          "IpPermissionsEgress": [
+            {
+              "IpProtocol": "-1",
+              "IpRanges": [
+                {
+                  "CidrIp": "0.0.0.0/0"
+                }
+              ],
+              "Ipv6Ranges": [],
+              "PrefixListIds": [],
+              "UserIdGroupPairs": []
+            }
+          ],
+          "OwnerId": "467087866041",
+          "VpcId": "vpc-c86ad37e"
+        }
+      ]
+    }
+    ```
+
+- Set configuration values
+
+  `$ cat <Path to configuration file> | pulumi config set CONFIGURATION`
+
+  `$ pulumi config set DEBUG "false"`
+
+  `$ pulumi config set SCHEDULE_EXPRESSION "rate(1 minute)"`
+
+- Deploy the stack
+
+  `$ pulumi up`
+
+### <ins>Terraform</ins>
+You can use Terraform to deploy SecurityGroupsManager using the following instructions
+- Clone the SecurityGroupsManager repo
+  
+  `$ git clone https://github.com/sfanous/SecurityGroupsManager.git`
+
+- Change directory to the terraform directory
+
+  `$ cd SecurityGroupsManager\terraform`
+  
+- Create a `terraform.tfvars` file using your favorite text editor containing your desired configuration such as the following
+
+   ```
+   aws_region          = "ca-central-1"
+    configuration       = <<-EOT
+    {
+      "SecurityGroups": [
+        {
+          "Description": "Terraform Security Group",
+          "GroupId": "sg-005a3c9d87336c67a",
+          "GroupName": "TerraformSecurityGroup",
+          "IpPermissions": [
+            {
+              "FromPort": 22,
+              "Hosts": [
+                {
+                  "Description": "Home",
+                  "FQDN": "ifanous.no-ip.ca"
+                }
+              ],
+              "IpProtocol": "tcp",
+              "Ipv6Ranges": [],
+              "PrefixListIds": [],
+              "ToPort": 22,
+              "UserIdGroupPairs": []
+            },
+            {
+              "FromPort": 28443,
+              "IpProtocol": "tcp",
+              "IpRanges": [
+                {
+                  "CidrIp": "0.0.0.0/0"
+                }
+              ],
+              "Ipv6Ranges": [],
+              "PrefixListIds": [],
+              "ToPort": 28443,
+              "UserIdGroupPairs": []
+            },
+            {
+              "FromPort": 443,
+              "Hosts": [
+                {
+                  "Description": "Home",
+                  "FQDN": "ifanous.no-ip.ca"
+                }
+              ],
+              "IpProtocol": "tcp",
+              "Ipv6Ranges": [],
+              "PrefixListIds": [],
+              "ToPort": 443,
+              "UserIdGroupPairs": []
+            },
+            {
+              "FromPort": 80,
+              "Hosts": [
+                {
+                  "Description": "Home",
+                  "FQDN": "ifanous.no-ip.ca"
+                }
+              ],
+              "IpProtocol": "tcp",
+              "IpRanges": [],
+              "Ipv6Ranges": [],
+              "PrefixListIds": [],
+              "ToPort": 80,
+              "UserIdGroupPairs": []
+            }
+          ],
+          "IpPermissionsEgress": [
+            {
+              "IpProtocol": "-1",
+              "IpRanges": [
+                {
+                  "CidrIp": "0.0.0.0/0"
+                }
+              ],
+              "Ipv6Ranges": [],
+              "PrefixListIds": [],
+              "UserIdGroupPairs": []
+            }
+          ],
+          "OwnerId": "118214136463",
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "TerraformSecurityGroup"
+            }
+          ],
+          "VpcId": "vpc-fac4fc92"
+        }
+      ]
+    }
+    EOT
+    debug               = "false"
+    schedule_expression = "rate(1 minute)"
+   ```
+- Initialize the working directory
+
+  `$ terraform init`
+
+- Review the execution plan
+
+  `$ terraform plan`
+
+- Execute the actions proposed by the Terraform plan
+
+  `$ terraform apply --auto-approve`
 
 ## Sample Output
 
